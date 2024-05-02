@@ -1,5 +1,5 @@
 import requests
-from config import APP_ID, APP_KEY, NUTRITIONX_URL
+from config import APP_ID, APP_KEY, NUTRITIONX_URL, SHEETY_URL, SHEETY_AUTH_KEY
 import datetime as dt
 
 nlp_url = f"{NUTRITIONX_URL}/v2/natural/exercise"
@@ -28,13 +28,12 @@ for exercise in exercise_data:
             "date": formatted_date,
             "time": formatted_time,
             "duration": exercise['duration_min'],
-            "exercise": exercise['user_input'],
+            "exercise": exercise['user_input'].title(),
             "calories": exercise['nf_calories']
         }
     }
     sheety_headers = {
-        "Authorization": "Bearer dklajfadksjfsfksdaio"
+        "Authorization": f"Bearer {SHEETY_AUTH_KEY}"
     }
-    sheety_url = "https://api.sheety.co/582c8f947665832aaca2ae9c6e8b3ce4/myWorkouts/workouts"
-    resp = requests.post(sheety_url, json=body, headers=sheety_headers)
+    resp = requests.post(SHEETY_URL, json=body, headers=sheety_headers)
     print(resp.text)
